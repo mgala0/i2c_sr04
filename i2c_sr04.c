@@ -3,7 +3,7 @@
  * @author M.A.G (m.gala@mgala.eu)
  * @brief STM32 HAL-based procedures for HC-SR04d ultrasonic distance meter with I2C interface
  * @version 1.0
- * @date 2024-01-21
+ * @date 2024-02-05
  *
  * @copyright Copyright (c) 2024
  * STM32 HAL-based procedures for HC-SR04d ultrasonic distance meter with I2C interface @ 0x57 address
@@ -56,7 +56,7 @@ float SR04MeasureDistanceMM(I2C_HandleTypeDef *hi2c)
 
 /**
  * @brief Send command to start measuring distance
- * Remember to have min. 120ms between this function and function that read measured distance
+ * Remember to have min. 120ms between calling this function and function that read measured distance
  * 
  * @param hi2c - pointer to h2ic instance
  * @return HAL_OK or HAL_ERROR depending of success or fail 
@@ -64,7 +64,8 @@ float SR04MeasureDistanceMM(I2C_HandleTypeDef *hi2c)
 
 HAL_StatusTypeDef SR04StartMeasureDistance(I2C_HandleTypeDef *hi2c)
 {
-    if HAL_I2C_Master_Transmit(hi2c, (I2C_RCWL9610_ADDRESS<<1)|I2C_WRITE_BIT, &command_measure_start, 1, 20) == HAL_OK)
+	uint8_t command_measure_start = COMMAND_MEASURE_START;
+	if (HAL_I2C_Master_Transmit(hi2c, (I2C_RCWL9610_ADDRESS<<1)|I2C_WRITE_BIT, &command_measure_start, 1, 20) == HAL_OK)
     {
         return HAL_OK;
     }
@@ -84,7 +85,7 @@ HAL_StatusTypeDef SR04StartMeasureDistance(I2C_HandleTypeDef *hi2c)
 
 float SR04GetDistanceMM(I2C_HandleTypeDef *hi2c)
 {
-    uint8_t command_measure_start = COMMAND_MEASURE_START;
+
     uint8_t readbuff[3];
 
     if (HAL_I2C_Master_Receive(hi2c, (I2C_RCWL9610_ADDRESS<<1)|I2C_READ_BIT, readbuff, 3, 50) ==HAL_OK) //read 3 bytes of distance data

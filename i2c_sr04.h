@@ -3,8 +3,8 @@
  * @author M.A.G (m.gala@mgala.eu)
  * @brief STM32 HAL-based procedures for HC-SR04d ultrasonic distance meter with I2C interface
  * See .c file for detials
- * @version 0.1
- * @date 2024-01-21
+ * @version 1.0
+ * @date 2024-02-05
  * 
  * @copyright Copyright (c) 2024
  * 
